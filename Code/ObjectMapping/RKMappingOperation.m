@@ -430,15 +430,16 @@ static NSString *const RKRootKeyPathPrefix = @"@root.";
         // We only want to consider the transformation successful and assign nil if the mapping calls for it
         return propertyMapping.objectMapping.assignsDefaultValueForMissingAttributes;
     }
-    Class transformedValueClass = propertyMapping.propertyValueClass ?: [self.objectMapping classForKeyPath:propertyMapping.destinationKeyPath];
-    if (! transformedValueClass) {
-        *outputValue = inputValue;
-        return YES;
-    }
 
     // Added NSUUID value transformation    
     if([inputValue isKindOfClass:[NSUUID class]]) {
         *outputValue = [inputValue UUIDString];
+        return YES;
+    }
+
+    Class transformedValueClass = propertyMapping.propertyValueClass ?: [self.objectMapping classForKeyPath:propertyMapping.destinationKeyPath];
+    if (! transformedValueClass) {
+        *outputValue = inputValue;
         return YES;
     }
 
